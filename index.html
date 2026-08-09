@@ -772,6 +772,24 @@
                     <p class="text-orange-500 font-bold text-lg">
                         Ansehen • Anfassen • Vergleichen • Auswählen
                     </p>
+                    
+                    <div class="mt-8">
+                        <p class="text-gray-600 mb-4">
+                            Schauen Sie sich unser Showroom in diesem Video an:
+                        </p>
+                        <div class="relative w-full" style="padding-bottom: 56.25%;">
+                            <iframe 
+                                id="showroom-video"
+                                src="https://www.youtube.com/embed/V6oiVVdZo4E&mute=1&autoplay=1&loop=1&playlist=V6oiVVdZo4E" 
+                                class="absolute top-0 left-0 w-full h-full rounded-lg"
+                                style="border: none;"
+                                title="BAUTECH D&K Showroom Video"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                referrerpolicy="no-referrer-when-downgrade" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -1385,6 +1403,34 @@
                 closeSuccessOverlay();
             }
         });
+
+        // ===== YouTube autoplay =====
+        const iframe = document.getElementById('showroom-video');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    console.log('Video is in view, attempting to play...');
+                    // 1. First, mute the video (modern browsers block unmuted autoplay)
+                    iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                    // 2. Play the video
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                } else {
+                    console.log('Video is out of view, pausing...');
+                    // 3. Pause when scrolled out of view
+                    iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                }
+            });
+        }, {
+            threshold: 0.1 // Fires when 10% of the video is visible on screen
+        });
+
+        if (iframe) {
+            observer.observe(iframe);
+            console.log("✅ Intersection Observer successfully attached to iframe.");
+        } else {
+            console.error("🚨 Error: Could not find an element with id='showroom-video'");
+        }
     </script>
 </body>
 </html>
