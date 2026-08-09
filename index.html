@@ -780,7 +780,7 @@
                         <div class="relative w-full" style="padding-bottom: 56.25%;">
                             <iframe 
                                 id="showroom-video"
-                                src="https://www.youtube.com/embed/V6oiVVdZo4E&mute=1&autoplay=1&loop=1&playlist=V6oiVVdZo4E" 
+                                data-src="https://www.youtube.com/embed/V6oiVVdZo4E" 
                                 class="absolute top-0 left-0 w-full h-full rounded-lg"
                                 style="border: none;"
                                 title="BAUTECH D&K Showroom Video"
@@ -1405,32 +1405,31 @@
         });
 
         // ===== YouTube autoplay =====
-        const iframe = document.getElementById('showroom-video');
+        // Select the iframe element
+        const videoElement = document.getElementById('showroom-video');
 
-        const observer = new IntersectionObserver((entries) => {
+        // Create the Intersection Observer
+        const observer = new IntersectionObserver((entries, observerInstance) => {
             entries.forEach(entry => {
+                // Check if at least 50% of the video is visible on the screen
                 if (entry.isIntersecting) {
-                    console.log('Video is in view, attempting to play...');
-                    // 1. First, mute the video (modern browsers block unmuted autoplay)
-                    iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-                    // 2. Play the video
-                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                } else {
-                    console.log('Video is out of view, pausing...');
-                    // 3. Pause when scrolled out of view
-                    iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                    // Extract the base URL from the custom data-src attribute
+                    const baseSrc = videoElement.getAttribute('data-src');
+                    
+                    // Append autoplay and mute parameters to bypass browser restrictions
+                    videoElement.src = `${baseSrc}?autoplay=1&mute=1`;
+                    
+                    // Stop watching this element so it never autoplays again
+                    observerInstance.unobserve(entry.target);
                 }
             });
         }, {
-            threshold: 0.1 // Fires when 10% of the video is visible on screen
+            // Trigger when 50% (0.5) of the video container is visible
+            threshold: 0.5 
         });
 
-        if (iframe) {
-            observer.observe(iframe);
-            console.log("✅ Intersection Observer successfully attached to iframe.");
-        } else {
-            console.error("🚨 Error: Could not find an element with id='showroom-video'");
-        }
+        // Start monitoring the video element
+        observer.observe(videoElement);
     </script>
 </body>
 </html>
