@@ -1414,7 +1414,7 @@
                 if (entry.isIntersecting) {
                     // 1. Swaps into view: build the URL with autoplay and mute, then play it
                     const baseSrc = videoElement.getAttribute('data-src');
-                    videoElement.src = `${baseSrc}?autoplay=1`;
+                    videoElement.src = `${baseSrc}?autoplay=1&mute=1`;
                 } else {
                     // 2. Scrolls out of view: check if it has a source loaded, then clear it to stop playback
                     if (videoElement.src !== "") {
