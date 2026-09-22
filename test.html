@@ -487,15 +487,15 @@
         
         .swiper {
             width: 100%;
-            height: 100%;
+            height: 500px;
         }
         
         .swiper-slide {
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 400px;
-            background-color: #1E1E1E;
+            height: 100%;
+            background-color: #121212;
         }
         
         .swiper-slide img {
@@ -543,6 +543,10 @@
         }
         
         @media (max-width: 768px) {
+            .swiper {
+                height: 300px; /* Smaller fixed height on mobile */
+            }
+
             .swiper-slide {
                 min-height: 250px;
             }
@@ -1561,6 +1565,7 @@
             pagination: {
                 el: '.projects-swiper .swiper-pagination',
                 clickable: true,
+                dynamicBullets: true,
             },
             navigation: {
                 nextEl: '.projects-swiper .swiper-button-next',
@@ -1587,6 +1592,7 @@
             pagination: {
                 el: '.services-swiper .swiper-pagination',
                 clickable: true,
+                dynamicBullets: true,
             },
             navigation: {
                 nextEl: '.services-swiper .swiper-button-next',
