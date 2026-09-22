@@ -74,6 +74,9 @@
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Swiper CSS for Image Carousels -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
     <style>
         * {
             scroll-behavior: smooth;
@@ -473,6 +476,84 @@
             transform: translateY(-5px);
         }
         
+        /* ===== CAROUSEL STYLES ===== */
+        .carousel-container {
+            position: relative;
+            margin: 24px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #121212;
+        }
+        
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            background-color: #1E1E1E;
+        }
+        
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .swiper-button-next,
+        .swiper-button-prev {
+            background-color: rgba(230, 81, 0, 0.8);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background-color: #E65100;
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.4);
+        }
+        
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            font-size: 20px;
+        }
+        
+        .swiper-pagination-bullet {
+            background-color: rgba(255, 255, 255, 0.5);
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background-color: #E65100;
+        }
+        
+        .swiper-pagination {
+            bottom: 16px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .swiper-slide {
+                min-height: 250px;
+            }
+            
+            .swiper-button-next,
+            .swiper-button-prev {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .desktop-nav {
                 display: none;
@@ -690,19 +771,54 @@
                 <h2 class="text-4xl md:text-5xl font-black text-gray-900">Unser Angebot</h2>
                 <p class="text-xl text-gray-600 mt-4">Die besten Hersteller Europas</p>
             </div>
-            <div class="space-y-6">
+            <div class="space-y-12">
+                <!-- PROJECT PLANNING SECTION -->
+                <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 pb-4 border-b-2 border-orange-500">
                         PROJEKTPLANUNG & REALISIERUNG
                     </h3>
-                    <img src="assets/images/project-planning.jpg" alt="Project Planning" class="w-full" loading="lazy">
+                    <img src="assets/images/project-planning.jpg" alt="Project Planning" class="w-full rounded-lg mb-6" loading="lazy">
+                    
+                    <!-- First Carousel: Our Projects -->
+                    <div class="carousel-container">
+                        <div class="swiper projects-swiper">
+                            <div class="swiper-wrapper" id="projectsCarouselWrapper">
+                                <!-- Images will be populated by JavaScript -->
+                            </div>
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SERVICES SECTION -->
+                <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 pb-4 border-b-2 border-orange-500">
                         UNSERE ARBEITEN
                     </h3>
-                    <img src="assets/images/our-services.jpg" alt="Our Services" class="w-full" loading="lazy">
+                    <img src="assets/images/our-services.jpg" alt="Our Services" class="w-full rounded-lg mb-6" loading="lazy">
+                    
+                    <!-- Second Carousel: Our Services -->
+                    <div class="carousel-container">
+                        <div class="swiper services-swiper">
+                            <div class="swiper-wrapper" id="servicesCarouselWrapper">
+                                <!-- Images will be populated by JavaScript -->
+                            </div>
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PARTNERS SECTION (UNCHANGED) -->
+                <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 pb-4 border-b-2 border-orange-500">
                         DIREKT VERTRÄGE
                     </h3>
-                    <img src="assets/images/our-partners.jpg" alt="Our Partners" class="w-full" loading="lazy">
+                    <img src="assets/images/our-partners.jpg" alt="Our Partners" class="w-full rounded-lg" loading="lazy">
+                </div>
             </div>            
             <div class="space-y-16">
                 <!-- UNSER SHOWROOM -->
@@ -1124,6 +1240,9 @@
         <i class="fas fa-arrow-up"></i>
     </div>
     
+    <!-- Swiper JS for Carousels -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
     <!-- VANILLA JAVASCRIPT -->
     <script>
         // ===== MOBILE MENU =====
@@ -1379,6 +1498,113 @@
 
         // Start monitoring the video element
         observer.observe(videoElement);
+        
+        // ===== IMAGE CAROUSELS INITIALIZATION =====
+        // Image data for carousels
+        const projectImages = [
+            'IMG-20260922-WA0054.jpg', 'IMG-20260922-WA0055.jpg', 'IMG-20260922-WA0056.jpg',
+            'IMG-20260922-WA0057.jpg', 'IMG-20260922-WA0058.jpg', 'IMG-20260922-WA0059.jpg',
+            'IMG-20260922-WA0060.jpg', 'IMG-20260922-WA0061.jpg', 'IMG-20260922-WA0062.jpg',
+            'IMG-20260922-WA0063.jpg', 'IMG-20260922-WA0064.jpg', 'IMG-20260922-WA0065.jpg',
+            'IMG-20260922-WA0066.jpg', 'IMG-20260922-WA0067.jpg', 'IMG-20260922-WA0068.jpg',
+            'IMG-20260922-WA0069.jpg', 'IMG-20260922-WA0070.jpg', 'IMG-20260922-WA0071.jpg',
+            'IMG-20260922-WA0072.jpg', 'IMG-20260922-WA0073.jpg', 'IMG-20260922-WA0074.jpg',
+            'IMG-20260922-WA0075.jpg', 'IMG-20260922-WA0076.jpg', 'IMG-20260922-WA0077.jpg',
+            'IMG-20260922-WA0078.jpg', 'IMG-20260922-WA0079.jpg', 'IMG-20260922-WA0080.jpg',
+            'IMG-20260922-WA0081.jpg', 'IMG-20260922-WA0082.jpg', 'IMG-20260922-WA0083.jpg',
+            'IMG-20260922-WA0084.jpg', 'IMG-20260922-WA0085.jpg', 'IMG-20260922-WA0086.jpg',
+            'IMG-20260922-WA0087.jpg', 'IMG-20260922-WA0088.jpg', 'IMG-20260922-WA0089.jpg',
+            'IMG-20260922-WA0090.jpg', 'IMG-20260922-WA0091.jpg', 'IMG-20260922-WA0092.jpg',
+            'IMG-20260922-WA0093.jpg', 'IMG-20260922-WA0094.jpg', 'IMG-20260922-WA0095.jpg',
+            'IMG-20260922-WA0096.jpg', 'IMG-20260922-WA0097.jpg', 'IMG-20260922-WA0098.jpg',
+            'IMG-20260922-WA0099.jpg', 'IMG-20260922-WA0100.jpg', 'IMG-20260922-WA0101.jpg',
+            'IMG-20260922-WA0102.jpg', 'IMG-20260922-WA0103.jpg', 'IMG-20260922-WA0104.jpg',
+            'IMG-20260922-WA0105.jpg', 'IMG-20260922-WA0106.jpg', 'IMG-20260922-WA0107.jpg',
+            'IMG-20260922-WA0108.jpg'
+        ];
+        
+        const serviceImages = [
+            'IMG-20260922-WA0004.jpg', 'IMG-20260922-WA0005.jpg', 'IMG-20260922-WA0006.jpg',
+            'IMG-20260922-WA0007.jpg', 'IMG-20260922-WA0008.jpg', 'IMG-20260922-WA0009.jpg',
+            'IMG-20260922-WA0010.jpg', 'IMG-20260922-WA0011.jpg', 'IMG-20260922-WA0012.jpg',
+            'IMG-20260922-WA0013.jpg', 'IMG-20260922-WA0014.jpg', 'IMG-20260922-WA0015.jpg',
+            'IMG-20260922-WA0016.jpg', 'IMG-20260922-WA0017.jpg', 'IMG-20260922-WA0018.jpg',
+            'IMG-20260922-WA0019.jpg', 'IMG-20260922-WA0020.jpg', 'IMG-20260922-WA0021.jpg',
+            'IMG-20260922-WA0022.jpg', 'IMG-20260922-WA0023.jpg', 'IMG-20260922-WA0031.jpg',
+            'IMG-20260922-WA0032.jpg', 'IMG-20260922-WA0033.jpg', 'IMG-20260922-WA0034.jpg',
+            'IMG-20260922-WA0035.jpg', 'IMG-20260922-WA0036.jpg', 'IMG-20260922-WA0037.jpg',
+            'IMG-20260922-WA0038.jpg', 'IMG-20260922-WA0039.jpg', 'IMG-20260922-WA0040.jpg'
+        ];
+        
+        // Function to populate carousel with images
+        function populateCarousel(wrapper, images, basePath) {
+            images.forEach(image => {
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+                slide.innerHTML = `<img src="${basePath}${image}" alt="Gallery image" loading="lazy">`;
+                wrapper.appendChild(slide);
+            });
+        }
+        
+        // Populate carousels
+        const projectsWrapper = document.getElementById('projectsCarouselWrapper');
+        const servicesWrapper = document.getElementById('servicesCarouselWrapper');
+        
+        populateCarousel(projectsWrapper, projectImages, 'assets/images/our-projects/');
+        populateCarousel(servicesWrapper, serviceImages, 'assets/images/our-services/');
+        
+        // Initialize Swiper carousels
+        const projectsSwiper = new Swiper('.projects-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            pagination: {
+                el: '.projects-swiper .swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.projects-swiper .swiper-button-next',
+                prevEl: '.projects-swiper .swiper-button-prev',
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                },
+                1024: {
+                    slidesPerView: 1,
+                },
+            }
+        });
+        
+        const servicesSwiper = new Swiper('.services-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            pagination: {
+                el: '.services-swiper .swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.services-swiper .swiper-button-next',
+                prevEl: '.services-swiper .swiper-button-prev',
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                },
+                1024: {
+                    slidesPerView: 1,
+                },
+            }
+        });
     </script>
 </body>
 </html>
